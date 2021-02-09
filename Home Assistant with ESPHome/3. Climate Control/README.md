@@ -26,14 +26,18 @@ sensor:
       - sensor.living_room_pithy_screen_temperature
 
   - platform: template
-    sensors: 
-      living_room_climate_temperature:
-        friendly_name: Living Room Climate Temperature
-        value_template: "{{ state_attr('climate.living_room', 'current_temperature') | round(1) }}"
+    sensors:
       living_room_climate_setpoint:
-        friendly_name: 'Living Room Climate Setpoint'
-        unit_of_measurement: '°C'
-        value_template: "{{ state_attr('climate.living_room', 'temperature') | round(0) }}"
+        friendly_name: "Living Room Climate Setpoint"
+        unit_of_measurement: "°C"
+        value_template: "{{ state_attr('climate.living_room', 'temperature') | int | round(0) }}"
+        icon_template: "mdi:thermometer-plus"
+    
+      living_room_climate_temperature:
+        friendly_name: "Living Room Climate Current Temperature"
+        unit_of_measurement: "°C"
+        value_template: "{{ state_attr('climate.living_room', 'current_temperature') | float | round(1) }}"
+        icon_template: "mdi:thermometer"
 
 binary_sensor:
   - platform: template
@@ -72,13 +76,13 @@ climate:
       seconds: 30
     keep_alive:
       minutes: 3
-    away_temp: 10
+    away_temp: 12
     precision: 0.1
 ```
-* We use the averaging sensor which we'll creat next as the target_sensor.
+* We use the averaging sensor which we created above as the target_sensor.
 * We chose a range of 10-30 degrees C.
 * We use away_temp as a Frost setting set to 12 degrees.
-* The name Demo Climate will result in the entity demo_climate.
+* The name Living Room will result in the entity climate.living_room.
 
 Once we've added those 2 sensors and the climate into HA's configuration file, just upload the ESP file and we're ready to go!
 
